@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
 import './ProductList.css';
 function ProductList() {
+  const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
@@ -294,7 +295,11 @@ function ProductList() {
                     <img className="product-image" src={plant.image} alt={plant.name} />
                     <div className="product-title">{plant.name}</div>
                     {/*Similarly like the above plant.name show other details like description and cost*/}
-                    <button className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                    {
+                      cart.findIndex(i => i.name === plant.name) === -1 ?
+                        <button className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button> :
+                        <button className="product-button added-to-cart">addedToCart</button>
+                    }
                   </div>
                 ))}
               </div>
